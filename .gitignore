@@ -1,0 +1,13 @@
+# secrets/env
+.env
+*.env
+
+app.db
+app.db-shm
+app.db-wal
+
+__pycache__/
+*.pyc
+.pycache_tmp/
+
+.DS_Store

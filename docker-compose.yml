@@ -1,0 +1,21 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.13.2
+    ports:
+      - '6333:6333'
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  api:
+    build: .
+    depends_on:
+      - qdrant
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/repo
+
+volumes:
+  qdrant_data:
