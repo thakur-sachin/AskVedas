@@ -168,6 +168,7 @@ def retrieve(
     query: str,
     k: int,
     allowed_docs: Iterable[str],
+    min_score: float = 0.0,
 ) -> list[RetrievedChunk]:
     client = get_qdrant_client()
     embedder = get_embedding_provider()
@@ -198,6 +199,9 @@ def retrieve(
 
     chunks: list[RetrievedChunk] = []
     for result in results:
+        raw_score = float(result.score)
+        if raw_score < min_score:
+            continue
         payload = result.payload or {}
         chunks.append(
             RetrievedChunk(
@@ -209,7 +213,7 @@ def retrieve(
                 script=str(payload.get('script', 'latin')),
                 text=str(payload.get('text', '')),
                 text_type=str(payload.get('text_type', 'mixed')),
-                score=float(result.score),
+                score=raw_score,
             )
         )
     return _rerank(chunks, query=query, limit=k)

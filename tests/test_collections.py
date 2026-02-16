@@ -18,6 +18,9 @@ class DummyClient:
     def create_collection(self, collection_name: str, vectors_config: qm.VectorParams) -> None:
         self.created.append(collection_name)
 
+    def create_payload_index(self, collection_name: str, field_name: str, field_schema: object, wait: bool = True) -> None:
+        pass
+
 
 
 def test_ensure_collections_creates_missing(monkeypatch) -> None:

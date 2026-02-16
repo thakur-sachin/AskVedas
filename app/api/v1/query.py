@@ -94,13 +94,9 @@ def _has_lexical_grounding(query: str, chunks: list) -> bool:
     for term in terms:
         if any(_term_matches_text(term, c.text) for c in chunks):
             hits += 1
-    ratio = hits / max(len(terms), 1)
-    term_count = len(terms)
-    if term_count >= 3:
-        return hits >= 2 and ratio >= 0.4
-    if term_count == 2:
-        return hits >= 1 and ratio >= 0.5
-    return hits >= 1
+    if hits >= 1:
+        return True
+    return False
 
 
 @router.post('/query', response_model=QueryResponse)
@@ -119,9 +115,14 @@ def query_scripture(payload: QueryRequest) -> QueryResponse:
         raise HTTPException(status_code=400, detail='No documents selected for the current routing.')
 
     k = min(payload.k, settings.retrieval_k_max)
-    chunks = retrieve(collection=collection_used, query=payload.query, k=k, allowed_docs=allowed_docs)
     min_similarity = _effective_min_similarity(payload.query, settings.min_similarity)
-    chunks = [c for c in chunks if c.score >= min_similarity]
+    chunks = retrieve(
+        collection=collection_used,
+        query=payload.query,
+        k=k,
+        allowed_docs=allowed_docs,
+        min_score=min_similarity,
+    )
     if chunks and not _has_lexical_grounding(payload.query, chunks):
         chunks = []
     citations = make_citations(chunks, max_chars=settings.quote_max_chars)

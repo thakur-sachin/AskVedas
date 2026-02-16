@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     collection_en: str = 'scriptures_en'
     collection_hi: str = 'scriptures_hi'
-    vector_size: int = 1024
+    vector_size: int = 768
 
     embedding_provider: Literal['sentence_transformers', 'openai', 'hash'] = 'sentence_transformers'
     embedding_model_name: str = 'intfloat/multilingual-e5-base'
