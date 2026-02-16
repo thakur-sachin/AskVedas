@@ -9,5 +9,6 @@ app.db-wal
 __pycache__/
 *.pyc
 .pycache_tmp/
+*.egg-info/
 
 .DS_Store
