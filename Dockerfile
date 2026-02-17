@@ -15,6 +15,9 @@ COPY pyproject.toml README.md .
 COPY app ./app
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir .
 
+# Pre-download the embedding model so it's baked into the image
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('intfloat/multilingual-e5-base')"
+
 COPY scripts ./scripts
 COPY data ./data
 

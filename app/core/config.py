@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     embedding_provider: Literal['sentence_transformers', 'openai', 'hash'] = 'sentence_transformers'
     embedding_model_name: str = 'intfloat/multilingual-e5-base'
     openai_api_key: str | None = None
-    embedding_local_files_only: bool = True
+    embedding_local_files_only: bool = False
     embedding_fallback_provider: Literal['hash', 'error'] = 'hash'
 
     llm_provider: Literal['ollama', 'mock'] = 'ollama'

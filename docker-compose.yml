@@ -16,6 +16,8 @@ services:
       - '8000:8000'
     volumes:
       - ./:/repo
+      - hf_cache:/root/.cache/huggingface
 
 volumes:
   qdrant_data:
+  hf_cache:
