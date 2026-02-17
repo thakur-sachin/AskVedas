@@ -17,6 +17,13 @@ services:
     volumes:
       - ./:/repo
       - hf_cache:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
 volumes:
   qdrant_data:
